@@ -134,6 +134,7 @@ body{
   background: var(--diamond);
   transform: rotate(-45deg);
   border: var(--border);
+  animation: pop 420ms both, diamondFloat 2s ease-in-out infinite;
 }
 
 .diamond--a{ 
@@ -163,9 +164,17 @@ body{
 .line{
   width: var(--line-w);
   height: var(--line-h);
-  background: var(--line);
+  background:
+    linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,.35) 20%, rgba(255,255,255,0) 40%),
+    var(--line);
+  background-size: 200% 100%, 100% 100%;
+  background-blend-mode: screen;
   border: var(--border);
+  animation: lineScan 2.6s linear infinite, lineBreath 3.4s ease-in-out infinite;
+  transform-origin: left center;
 }
+.ui__lines .line:nth-child(1){ animation-delay: 0s, .0s; }
+.ui__lines .line:nth-child(2){ animation-delay: .35s, .2s; }
 
 .ui__dot{
   width: var(--dot-size);
@@ -173,6 +182,7 @@ body{
   background: var(--dot);
   border: var(--border);
   border-radius: 50%;
+  animation: pulseDot 2.8s ease-in-out infinite;
 }
 
 /* Sekcja: Panel (prostokąt z tekstem) */
@@ -190,7 +200,50 @@ body{
   margin-left: var(--panel-left);
   position: relative;
   overflow: hidden;
+  animation: slideInPanel 0.8s ease-out;
 }
+
+@keyframes panelSweep {
+  0%   { transform: translateX(-150%) skewX(-20deg); }
+  100% { transform: translateX(150%)  skewX(-20deg); }
+}
+.panel::before{
+  content:"";
+  position:absolute;
+  top:-15%; bottom:-15%;
+  left:-50%;
+  width:50%;
+  background: linear-gradient(90deg,
+    rgba(255,255,255,0) 0%,
+    rgba(255,255,255,0.35) 40%,
+    rgba(255,255,255,0.65) 50%,
+    rgba(255,255,255,0.35) 60%,
+    rgba(255,255,255,0) 100%);
+  filter: blur(4px);
+  mix-blend-mode: screen;
+  pointer-events:none;
+  opacity:.7;
+  animation: panelSweep 3s ease-in-out infinite;
+}
+.panel::after{
+  content:"";
+  position:absolute;
+  top:-18%; bottom:-18%;
+  left:-52%;
+  width:52%;
+  background: linear-gradient(90deg,
+    rgba(0,0,0,0) 0%,
+    rgba(0,0,0,0.12) 40%,
+    rgba(0,0,0,0.22) 50%,
+    rgba(0,0,0,0.12) 60%,
+    rgba(0,0,0,0) 100%);
+  filter: blur(4px);
+  mix-blend-mode: multiply;
+  pointer-events:none;
+  opacity:.35;
+  animation: panelSweep 3s ease-in-out infinite;
+}
+
 .panel__text{
   font-size: var(--panel-font);
   line-height: 1;
@@ -246,3 +299,39 @@ body{
     margin-top: 150px;
   }
 }
+
+/* Animacje */
+@keyframes pop{
+  from{ transform: rotate(-45deg) scale(.88); opacity: .65; }
+  to  { transform: rotate(-45deg) scale(1);   opacity: 1; }
+}
+@keyframes diamondFloat {
+  0%   { transform: rotate(-45deg) translateY(0)    rotate(0deg); }
+  50%  { transform: rotate(-45deg) translateY(-6px) rotate(1deg); }
+  100% { transform: rotate(-45deg) translateY(0)    rotate(0deg); }
+}
+@keyframes lineScan {
+  0%   { background-position: 0% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes lineBreath {
+  0%,100% { transform: scaleX(1); }
+  50%     { transform: scaleX(1.04); }
+}
+@keyframes pulseDot {
+  0%,100% { transform: scale(1); }
+  50%     { transform: scale(1.08); }
+}
+@keyframes slideInPanel {
+  from { transform: translateX(40px); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .diamond, .line, .ui__dot, .panel, .panel::before, .panel::after {
+    animation: none !important;
+  }
+}
+.diamond:hover{ filter: brightness(1.1); }
+.line:hover{ filter: saturate(1.2); }
+.ui__dot:hover{ box-shadow: 0 0 0 6px rgba(255,255,255,.15) inset; }
