@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Responsywny układ — HTML + CSS</title>
+
+  <!-- Główny arkusz stylów -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- SCENA -->
+  <main class="scene" aria-label="Scena">
+
+    <!-- Pasek górny -->
+    <header class="topbar" aria-hidden="true"></header>
+
+    <!-- Sekcja: diamenty -->
+    <div class="diamonds" aria-hidden="true">
+      <div class="diamond diamond--a"></div>
+      <div class="diamond diamond--b"></div>
+    </div>
+
+    <!-- Sekcja: blok UI (dwa paski + kółko) -->
+    <div class="ui">
+      <div class="ui__lines">
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+      <div class="ui__dot"></div>
+    </div>
+
+    <!-- Sekcja: panel (prostokąt z tekstem) -->
+    <section class="panel" aria-label="Panel">
+      <span class="panel__text">ABC</span>
+    </section>
+  </main>
+</body>
+</html>

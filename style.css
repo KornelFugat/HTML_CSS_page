@@ -1,0 +1,248 @@
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+:root{
+  /* Kolory */
+  --bg: #0e6c11;
+  --panel-blue:  #0000fe;   
+  --panel-red:   #c83636;   
+  --panel-white: #ffffff;   
+  --diamond: #ff0404;
+  --line: #001bda;
+  --dot: #0e7f80;
+  --topbar: #807f01;
+  --text: #000;
+
+  /* Wymiary bazowe (dla szerokości >900px) */
+  --topbar-h: 100px;
+  --topbar-border: 4px solid #000;
+
+  --edge: 25px;
+  --gap: 10px;
+
+  --border: 3px solid #000;
+
+  --diamond-size: clamp(10px, 12vw, 200px);
+  --diamond-gap: 10px;
+
+  --ui-gap: 40px;
+  --ui-top: 50px;
+  --line-w: clamp(100px, 12vw, 210px);
+  --line-h: clamp(20px, 1.8vw, 21px);
+  --lines-gap: 30px;
+  --dot-size: clamp(100px, 8vw, 135px);
+  --dot-scale-y: 0.9;
+
+  --panel-w: clamp(250px, 25vw, 320px);
+  --panel-h: 95%;
+  --panel-font: 55px;
+  --panel-right: 30px;
+  --panel-left: 0px;
+  --panel-top: 30px;
+}
+
+/* Szerokość 583px-900px */
+@media (min-width: 583px) and (max-width: 900px){
+  :root{
+    --diamond-size: clamp(50px, 20vw, 210px);
+
+    --line-w: clamp(100px, 20vw, 210px);
+    --line-h: clamp(14px, 3.8vw, 20px);
+
+    --dot-size: clamp(120px, 20vw, 135px);
+    --panel-w: clamp(200px, 34vw, 320px);
+    --panel-h: 100%;
+  }
+}
+
+/* Szerokość <583px */
+@media (max-width: 582px){
+  :root{
+    --edge: 16px;
+    --gap: 16px;
+
+    --diamond-size: clamp(72px, min(28vw, 23vh), 140px);
+    --diamond-gap: 4px;
+
+    --line-w: clamp(100px, 35vw, 180px);
+    --line-h: clamp(14px, 3.2vh, 20px);
+
+    --dot-size: clamp(72px, 18vh, 110px);
+    --dot-scale-y: 0.9;
+
+    --ui-gap: clamp(16px, 4vh, 28px);
+    --ui-top: clamp(12px, 3vh, 24px);
+
+    --panel-w: clamp(200px, 70vw, 260px);
+    --panel-h: 100%;
+    --panel-left: 40px;
+  }
+}
+
+/* Layout ogólny */
+html, body { height: 100%; margin: 0; }
+
+body{
+  height: 100dvh;
+  overflow: hidden;
+  background: var(--bg);
+  font-family: system-ui, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+.scene{
+  height: 100dvh;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto auto 1fr;
+  grid-template-areas:
+    "diamonds"
+    "ui"
+    "panel";
+  align-content: start;
+  justify-items: start;
+  gap: var(--gap);
+  padding-top: calc(var(--topbar-h) + var(--edge));
+  padding-bottom: 10px;
+  position: relative;
+}
+
+/* Pasek górny */
+.topbar{
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: var(--topbar-h);
+  background: var(--topbar);
+  border: var(--topbar-border);
+  z-index: 2;
+}
+
+/* Sekcja: Diamenty */
+.diamonds{
+  grid-area: diamonds;
+  width: calc(var(--diamond-size)*2 + var(--diamond-gap) + var(--edge)*2);
+  height: calc(var(--diamond-size)*2 + var(--diamond-gap) + var(--edge)*2);
+  position: relative;
+  margin-left: var(--edge);
+}
+
+.diamond{
+  position: absolute;
+  width: var(--diamond-size);
+  height: var(--diamond-size);
+  background: var(--diamond);
+  transform: rotate(-45deg);
+  border: var(--border);
+}
+
+.diamond--a{ 
+  top: var(--edge);
+  right: var(--edge);
+}
+.diamond--b{ 
+  top: calc(var(--edge) + var(--diamond-size) + var(--diamond-gap));
+  left: var(--edge); 
+}
+
+/* Sekcja: UI (paski + kółko) */
+.ui{
+  grid-area: ui;
+  display: grid;
+  grid-auto-flow: column;
+  align-items: center;
+  justify-content: start;
+  justify-self: start;
+  gap: var(--ui-gap);
+  margin-left: var(--edge);
+  margin-top: var(--ui-top);
+}
+
+.ui__lines{ display: grid; gap: var(--lines-gap); }
+
+.line{
+  width: var(--line-w);
+  height: var(--line-h);
+  background: var(--line);
+  border: var(--border);
+}
+
+.ui__dot{
+  width: var(--dot-size);
+  height: calc(var(--dot-size) * var(--dot-scale-y));
+  background: var(--dot);
+  border: var(--border);
+  border-radius: 50%;
+}
+
+/* Sekcja: Panel (prostokąt z tekstem) */
+.panel{
+  grid-area: panel;
+  width: var(--panel-w);
+  height: var(--panel-h);
+  background: var(--panel-blue);
+  border: var(--border);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 16px;
+  margin-right: 0;
+  margin-left: var(--panel-left);
+  position: relative;
+  overflow: hidden;
+}
+.panel__text{
+  font-size: var(--panel-font);
+  line-height: 1;
+  color: var(--text);
+}
+
+/* Szerokość 583px-900px */
+@media (min-width: 583px) and (max-width: 900px){
+  .scene{
+    grid-template-columns: 1fr var(--panel-w);
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+      "diamonds panel"
+      "ui       panel";
+    align-items: stretch;
+    justify-items: stretch;
+    padding-right: var(--panel-right);
+    padding-bottom: 30px;
+  }
+  .panel{
+    background: var(--panel-red);
+    align-self: start;
+    margin-right: var(--panel-right);
+  }
+  .ui{
+    justify-self: start;
+    align-self: start;
+    margin-top: 150px;
+  }
+}
+
+/* Szerokość >900px */
+@media (min-width: 901px){
+  .scene{
+    grid-template-columns: 1fr 1fr var(--panel-w);
+    grid-template-rows: 1fr;
+    grid-template-areas: "diamonds ui panel";
+    align-items: stretch;
+    justify-items: stretch;
+    padding-right: var(--panel-right);
+    padding-bottom: 50px;
+    column-gap: 10px;
+  }
+  .panel{
+    background: var(--panel-white);
+    color: var(--text);
+    margin-top: var(--panel-top);
+    align-self: start;
+  }
+  .ui{ 
+    justify-self: start; 
+    align-self: start;
+    margin-top: 150px;
+  }
+}
